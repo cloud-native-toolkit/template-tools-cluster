@@ -34,6 +34,10 @@ resource null_resource create_dirs {
   provisioner "local-exec" {
     command = "mkdir -p ${local.tmp_dir}"
   }
+
+  provisioner "local-exec" {
+    command = "echo 'KUBECONFIG=${var.cluster_config_file}'"
+  }
 }
 
 resource "null_resource" "list_tmp" {
