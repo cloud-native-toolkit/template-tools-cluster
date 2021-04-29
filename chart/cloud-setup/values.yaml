@@ -1,0 +1,17 @@
+# Default values for cloud-setup.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+global:
+  clusterType: "ocp4"
+  ingressSubdomain: ""
+  tlsSecretName: ""
+
+cntk-dev-guide:
+  name: "cntk-dev-guide"
+  displayName: "Cloud-Native Toolkit"
+  url: "https://cloudnativetoolkit.dev"
+
+first-app:
+  name: "first-app"
+  displayName: "Deploy first app"
+  url: "https://cloudnativetoolkit.dev/getting-started-day-1/deploy-app/"
