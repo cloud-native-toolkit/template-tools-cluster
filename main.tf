@@ -73,9 +73,15 @@ resource null_resource delete-helm-cloud-config {
 }
 
 resource "null_resource" "delete-consolelink" {
-
   provisioner "local-exec" {
     command = "kubectl api-resources -o name | grep -q consolelink && kubectl delete consolelink toolkit-cntk-dev-guide --ignore-not-found"
+
+    environment = {
+      KUBECONFIG = var.cluster_config_file
+    }
+  }
+  provisioner "local-exec" {
+    command = "kubectl api-resources -o name | grep -q consolelink && kubectl delete consolelink toolkit-first-app --ignore-not-found"
 
     environment = {
       KUBECONFIG = var.cluster_config_file
