@@ -21,7 +21,7 @@ versions:
       refs:
         - source: github.com/ibm-garage-cloud/terraform-k8s-namespace
           version: ">= 2.1.0"
-  variables: []
+  variables:
     - name: cluster_type_code
       moduleRef:
         id: cluster
