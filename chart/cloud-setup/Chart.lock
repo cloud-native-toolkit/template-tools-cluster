@@ -1,9 +1,15 @@
 dependencies:
-- name: doc-config
+- name: ocp-console-link
   repository: https://charts.cloudnativetoolkit.dev/
   version: 0.1.0
-- name: doc-config
+- name: ocp-console-link
   repository: https://charts.cloudnativetoolkit.dev/
   version: 0.1.0
-digest: sha256:0de03f60024bb8722c686fdedd8ee1d2d56bbd2534afaee0333b919df4b7957c
-generated: "2021-04-28T23:32:59.298134-05:00"
+- name: ocp-console-cli-download
+  repository: https://cloud-native-toolkit.github.io/toolkit-charts/
+  version: 0.2.0
+- name: ocp-console-notification
+  repository: https://charts.cloudnativetoolkit.dev/
+  version: 0.2.0
+digest: sha256:1798154ee80411faf25ea5de745c5ff8ea02350fbdc695c6689e83b48764e023
+generated: "2021-04-30T16:45:42.884594-05:00"
