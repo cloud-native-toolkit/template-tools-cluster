@@ -100,5 +100,25 @@ resource "helm_release" "cloud_setup" {
   force_update      = true
   replace           = true
 
+  set {
+    name = "banner.text"
+    value = var.banner_text
+  }
+
+  set {
+    name = "banner.text"
+    value = var.banner_text
+  }
+
+  set {
+    name = "banner.backgroundColor"
+    value = var.banner_background_color
+  }
+
+  set {
+    name = "banner.color"
+    value = var.banner_text_color
+  }
+
   disable_openapi_validation = true
 }

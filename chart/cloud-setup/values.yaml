@@ -10,8 +10,34 @@ cntk-dev-guide:
   name: "cntk-dev-guide"
   displayName: "Cloud-Native Toolkit"
   url: "https://cloudnativetoolkit.dev"
+  location: HelpMenu
 
 first-app:
   name: "first-app"
   displayName: "Deploy first app"
   url: "https://cloudnativetoolkit.dev/getting-started-day-1/deploy-app/"
+  location: HelpMenu
+
+cli-menu:
+  name: "cli-menu"
+  displayName: "igc - Cloud-Native Toolkit cli"
+  links:
+    - https://cloudnativetoolkit.dev/getting-started/cli
+  description: |
+    The Cloud-Native Toolkit cli provides a set of helpful utilities that can be invoked from the command line. It was
+    created to automate and simplify complicated and repetitive tasks, allowing developers to be more productive.
+
+    For each of the commands provided by the cli, the equivalent manual steps are also given for the sake of full
+    transparency and to take away any notion of “magic” that the CLI might be performing.
+
+    Some of the utilities provided by the CLI include:
+
+    - Register your application’s git repo into a CI pipeline (Jenkins, Tekton, etc.)
+    - List the ingress URLs and route URLs defined within the cluster
+    - List the connection information (endpoints, user names, and passwords) for the tools configured in the environment
+    - Help copy config maps and secrets into new projects/namespace
+    - Enable existing Starter Kits with the necessary artifacts to be integrated easily into the environment
+
+banner:
+  backgroundColor: purple
+  color: white
