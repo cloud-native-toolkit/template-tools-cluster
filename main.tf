@@ -1,10 +1,19 @@
 
 locals {
   tmp_dir      = "${path.cwd}/.tmp"
+  bin_dir      = module.setup_clis.bin_dir
   gitops_dir   = var.gitops_dir != "" ? var.gitops_dir : "${path.cwd}/gitops"
   chart_name   = "cloud-setup"
   chart_dir    = "${path.module}/chart/cloud-setup"
   ibmcloud_release_name = "ibmcloud-config"
+
+  helm_values       = {
+    banner = {
+      text = var.banner_text
+      backgroundColor = var.banner_background_color
+      color = var.banner_text_color
+    }
+  }
 }
 
 resource null_resource create_dirs {
@@ -19,6 +28,12 @@ resource null_resource create_dirs {
   provisioner "local-exec" {
     command = "echo 'KUBECONFIG=${var.cluster_config_file}'"
   }
+}
+
+module setup_clis {
+  source = "github.com/cloud-native-toolkit/terraform-util-clis.git"
+
+  clis = ["helm"]
 }
 
 resource null_resource delete-helm-cloud-config {
@@ -89,36 +104,40 @@ resource "null_resource" "delete-consolelink" {
   }
 }
 
-resource "helm_release" "cloud_setup" {
+resource null_resource cloud_setup_helm {
   depends_on = [null_resource.delete-helm-cloud-config, null_resource.delete-consolelink]
 
-  name              = "cloud-setup"
-  chart             = local.chart_dir
-  namespace         = var.namespace
-  timeout           = 1200
-  dependency_update = true
-  force_update      = true
-  replace           = true
-
-  set {
-    name = "banner.text"
-    value = var.banner_text
+  triggers = {
+    namespace = var.namespace
+    name = "cloud-setup"
+    chart = local.chart_dir
+    values_file_content = yamlencode(local.helm_values)
+    kubeconfig = var.cluster_config_file
+    tmp_dir = local.tmp_dir
+    bin_dir = local.bin_dir
   }
 
-  set {
-    name = "banner.text"
-    value = var.banner_text
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/deploy-helm.sh ${self.triggers.namespace} ${self.triggers.name} ${self.triggers.chart}"
+
+    environment = {
+      KUBECONFIG = self.triggers.kubeconfig
+      VALUES_FILE_CONTENT = self.triggers.values_file_content
+      TMP_DIR = self.triggers.tmp_dir
+      BIN_DIR = self.triggers.bin_dir
+    }
   }
 
-  set {
-    name = "banner.backgroundColor"
-    value = var.banner_background_color
-  }
+  provisioner "local-exec" {
+    when = destroy
 
-  set {
-    name = "banner.color"
-    value = var.banner_text_color
-  }
+    command = "${path.module}/scripts/destroy-helm.sh ${self.triggers.namespace} ${self.triggers.name} ${self.triggers.chart}"
 
-  disable_openapi_validation = true
+    environment = {
+      KUBECONFIG = self.triggers.kubeconfig
+      VALUES_FILE_CONTENT = self.triggers.values_file_content
+      TMP_DIR = self.triggers.tmp_dir
+      BIN_DIR = self.triggers.bin_dir
+    }
+  }
 }
