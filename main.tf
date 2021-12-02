@@ -13,6 +13,7 @@ locals {
       backgroundColor = var.banner_background_color
       color = var.banner_text_color
     }
+  }
 }
 
 resource null_resource create_dirs {
