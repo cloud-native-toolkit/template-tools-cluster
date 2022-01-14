@@ -18,6 +18,81 @@ versions:
             version: ">= 1.7.0"
           - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
             version: ">= 2.0.0"
+          - source: github.com/cloud-native-toolkit/terraform-ocp-login
+            version: ">= 1.0.0"
+      - id: namespace
+        refs:
+          - source: github.com/ibm-garage-cloud/terraform-k8s-namespace
+            version: ">= 2.1.0"
+    variables:
+      - name: cluster_type_code
+        moduleRef:
+          id: cluster
+          output: platform.type_code
+        type: string
+        description: Cluster type.
+        default: ocp4
+        optional: true
+      - name: ingress_hostname
+        moduleRef:
+          id: cluster
+          output: platform.ingress
+        type: string
+        description: The ingress hostname for the cluster.
+        default: ""
+        optional: true
+      - name: cluster_config_file
+        moduleRef:
+          id: cluster
+          output: config_file_path
+        type: string
+        description: Cluster config file for Kubernetes cluster.
+      - name: tls_secret
+        moduleRef:
+          id: cluster
+          output: platform.tls_secret
+        type: string
+        description: The name of the tls secret for the ingress.
+        default: ""
+        optional: true
+      - name: namespace
+        moduleRef:
+          id: namespace
+          output: name
+        type: string
+        description: The namespace where the configureation will be deployed
+      - name: gitops_dir
+        type: string
+        description: Directory where the gitops repo content should be written
+        default: ""
+        optional: true
+      - name: banner_text
+        type: string
+        description: Text that should be shown in the banner on the cluster
+        default: ""
+        optional: true
+      - name: banner_background_color
+        type: string
+        description: The background color for the banner
+        default: purple
+        optional: true
+      - name: banner_text_color
+        type: string
+        description: The foreground color for the banner
+        default: white
+        optional: true
+    version: v0.1.2
+  - platforms:
+      - ocp4
+    dependencies:
+      - id: cluster
+        refs:
+          - source: github.com/ibm-garage-cloud/terraform-ibm-ocp-vpc
+            version: ">= 1.0.0"
+          - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
+            version: ">= 1.7.0"
+          - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
+            version: ">= 2.0.0"
       - id: namespace
         refs:
           - source: github.com/ibm-garage-cloud/terraform-k8s-namespace
